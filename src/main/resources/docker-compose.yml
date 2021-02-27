@@ -5,7 +5,7 @@ version: '3.7'
 services:
   # App backend service
   app:
-    image: spring-boot-docker-postgres:latest
+    image: docker-spring-boot-postgres:latest
     # Give the container the name web-app. You can changes to something else.
     container_name: webflux
     # Forward the exposed port 8080 on the container to port 8080 on the host machine
