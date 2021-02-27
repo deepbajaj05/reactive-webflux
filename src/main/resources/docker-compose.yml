@@ -1,38 +1,21 @@
-# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
-version: '3.7'
+version: '3'
 
-# Define services
 services:
-  # App backend service
-  app:
-    image: docker-spring-boot-postgres:latest
-    # Give the container the name web-app. You can changes to something else.
-    container_name: webflux
-    # Forward the exposed port 8080 on the container to port 8080 on the host machine
-    ports:
-      - "8080:8080"
-    # This service depends on postgres. Start that first.
-    depends_on:
-      - db
-    
-  # Database Service (Postgres)
   db:
-    # Use the Docker Image postgres. This will pull the 12 version.
-    image: postgres:12
-    # Give the container the name postgres-db. You can changes to something else.
-    container_name: postgres-db
-    restart: always
-    # Maps port 5432 (localhost) to port 5432 on the container. You can change the ports to fix your needs.
+    image: "postgres"
     ports:
       - "5432:5432"
-    # Setup the username, password, and database name. You can changes these values.
     environment:
+      POSTGRES_DB: testing
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: testing
-    # Service health check
-    healthcheck:
-      test: pg_isready -U postgres
-      interval: 1m
-      timeout: 10s
-      retries: 2
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      spring.r2dbc.url=r2dbc:postgresql://localhost:5432/testing
+      spring.r2dbc.username=root
+      spring.r2dbc.password=root
+    depends_on:
+      - db
