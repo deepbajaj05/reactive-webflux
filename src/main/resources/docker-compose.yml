@@ -12,7 +12,7 @@ services:
     build: .
     ports:
       - '8080:8080'
-    environment: >-
+    environment: 
       spring.r2dbc.url=r2dbc:postgresql://localhost:5432/testing
       spring.r2dbc.username=root spring.r2dbc.password=root
     depends_on:
